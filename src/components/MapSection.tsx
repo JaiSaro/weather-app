@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { RefObject } from 'react';
+import { useAppDispatch } from '../core/redux/hooks';
+import { setLocationCoordinates } from '../core/redux/locationInfoSlice';
 
 export default function MapSection() {
-    const [mapCoordinates, setMapCoordinates] = React.useState({
-        lat: 32.63975498965483,
-        lng: -96.98738218805313,
-    });
-    const [googleMap, setGoogleMap] = React.useState<google.maps.Map | null>(null);
-    const mapRef: any = React.useRef<HTMLDivElement>(null);
+    const [mapCoordinates, setMapCoordinates] =
+        React.useState<google.maps.LatLngLiteral>({
+            lat: 32.63975498965483,
+            lng: -96.98738218805313,
+        });
+    const [googleMap, setGoogleMap] = React.useState<google.maps.Map | null>(
+        null
+    );
+    const mapRef: RefObject<any> = React.useRef<HTMLDivElement>(null);
+    const dispatch = useAppDispatch();
 
     React.useEffect(() => {
         getUserLocation();
@@ -23,12 +29,19 @@ export default function MapSection() {
         );
         googleMapTmp.setTilt(0);
         setGoogleMap(googleMapTmp);
+        googleMapTmp.addListener("click", (mapsMouseEvent: any) => {
+            let latLng = mapsMouseEvent.latLng.toJSON();
+            if (latLng) {
+                setMapCoordinates(latLng);
+            }
+        });
     }, []);
 
     React.useEffect(() => {
-      if (googleMap) {
-        googleMap.setCenter(mapCoordinates);
-      }
+        if (googleMap && mapCoordinates?.lat && mapCoordinates?.lng) {
+            googleMap.setCenter(mapCoordinates);
+            dispatch(setLocationCoordinates(mapCoordinates));
+        }
     }, [googleMap, mapCoordinates]);
 
     const getUserLocation = () => {
