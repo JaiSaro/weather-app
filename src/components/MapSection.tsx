@@ -17,7 +17,7 @@ export default function MapSection() {
                 zoomControl: true,
                 draggableCursor: "'crosshair'",
                 mapTypeControl: false,
-                zoom: 5,
+                zoom: 10,
                 center: { lat: 32.63975498965483, lng: -96.98738218805313 },
             }
         );
