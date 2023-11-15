@@ -3,6 +3,11 @@
 - Replace {APIKEY} with your APIKEY in index.html and replace REACT_APP_MAP_API_KEY value with google map {APIKEY} in .env file.
 - Replace REACT_APP_WEATHER_API_KEY value with weather {APIKEY} in .env file
 
+## Install dependency by
+
+### `yarn install`
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
